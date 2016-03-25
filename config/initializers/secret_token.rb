@@ -9,4 +9,26 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-Appppp::Application.config.secret_key_base = 'd05a63bc294035305bb28bb5f6dd015f6b6ebe6ff9289a0b339388119d0a5c2c0a5f84bd226ffba304db064255d1c4c6d4b15818d13b0728868610a1fc1ba7ee'
+
+
+
+
+#シークレットトークン生成用
+require 'securerandom'
+
+def secure_token
+  token_file = Rails.root.join('.secret')
+  if File.exist?(token_file)
+    # Use the existing token.
+    File.read(token_file).chomp
+  else
+    # Generate a new token and store it in token_file.
+    token = SecureRandom.hex(64)
+    File.write(token_file, token)
+    token
+  end
+end
+
+Appppp::Application.config.secret_key_base = secure_token
+
+
